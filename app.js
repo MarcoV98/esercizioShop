@@ -13,7 +13,7 @@ class ProductItem {
   }
 
   render() {
-    const prodEl = document.createElement("li");
+    const prodEl = document.createElement('li');
     prodEl.innerHTML = ` 
       <div> 
         <img src="${this.product.imageUrl}" alt="${this.product.title}" width="200" height="200"/>
@@ -23,8 +23,8 @@ class ProductItem {
         <button>Add to Cart</button>
       </div> 
     `;
-    const addCartButton = prodEl.querySelector("button");
-    addCartButton.addEventListener("click", this.addToCart.bind(this));
+    const addCartButton = prodEl.querySelector('button');
+    addCartButton.addEventListener('click', this.addToCart.bind(this));
     return prodEl;
   }
 
@@ -36,21 +36,21 @@ class ProductItem {
 class ProductList {
   products = [
     new Product(
-      "A Pillow",
-      "https://www.materassi.com/cdn/shop/files/GANT14_A2_1.jpg?v=1725207787&width=990",
-      "A soft pillow",
+      'A Pillow',
+      'https://www.materassi.com/cdn/shop/files/GANT14_A2_1.jpg?v=1725207787&width=990',
+      'A soft pillow',
       19.99
     ),
     new Product(
-      "A Carpet",
-      "https://thumbs.static-thomann.de/thumb//orig/pics/prod/308445.webp",
-      "Perfect Carpet!",
+      'A Carpet',
+      'https://thumbs.static-thomann.de/thumb//orig/pics/prod/308445.webp',
+      'Perfect Carpet!',
       89.99
     ),
   ];
 
   render() {
-    const prodList = document.createElement("ul");
+    const prodList = document.createElement('ul');
     for (const prod of this.products) {
       const productItem = new ProductItem(prod);
       const prodEl = productItem.render();
@@ -63,34 +63,40 @@ class ProductList {
 class ShoppingCart {
   items = [];
 
-  addProduct(product) {
-    this.items.push(product);
-    const totalPrice = this.items.reduce(
+  set cartItems(value) {
+    this.items = value;
+    this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount}</h2>`;
+  }
+
+  get totalAmount() {
+    const sum = this.items.reduce(
       (prevValue, curItem) => prevValue + curItem.price,
       0
     );
-    this.totalOutput.innerHTML = `
-      <h2>Total: \$${totalPrice.toFixed(2)}</h2>
-    `;
+    return sum;
+  }
 
-    console.log(this.items);
+  addProduct(product) {
+    const updatedItems = [...this.items];
+    updatedItems.push(product);
+    this.cartItems = updatedItems;
   }
 
   render() {
-    const cartEl = document.createElement("section");
+    const cartEl = document.createElement('section');
     cartEl.innerHTML = `
       <h2>Total: \$0</h2>
       <button>Order Now!</button>
     `;
 
-    this.totalOutput = cartEl.querySelector("h2");
+    this.totalOutput = cartEl.querySelector('h2');
     return cartEl;
   }
 }
 
 class Shop {
   render() {
-    const renderHook = document.getElementById("app");
+    const renderHook = document.getElementById('app');
 
     const productList = new ProductList();
     const prodListEl = productList.render();
